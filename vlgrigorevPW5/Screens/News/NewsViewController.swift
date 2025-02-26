@@ -17,13 +17,23 @@ final class NewsViewController: UIViewController {
         view.backgroundColor = .white
         // Do any additional setup after loading the view.
         view.addSubview(tableView)
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.pinTop(to: view.safeAreaLayoutGuide.topAnchor)
+        tableView.pinBottom(to: view.safeAreaLayoutGuide.bottomAnchor)
+        tableView.pinLeft(to: view.safeAreaLayoutGuide.leadingAnchor)
+        tableView.pinRight(to: view.safeAreaLayoutGuide.trailingAnchor)
         tableView.dataSource = self
+        tableView.delegate = self
     }
 
 
 }
 
-extension NewsViewController: UITableViewDataSource {
+extension NewsViewController: UITableViewDataSource, UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print(indexPath.row)
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
     }
