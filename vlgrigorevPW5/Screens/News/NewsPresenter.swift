@@ -13,7 +13,7 @@ final class NewsPresenter: NewsPresenterProtocol {
     weak var newsVC: NewsViewController?
     
     func presentNews() {
-        <#code#>
+        print("testPresentNews")
     }
     
     

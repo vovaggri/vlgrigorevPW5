@@ -24,11 +24,11 @@ final class NewsInteractor: NewsBuisnessLogic, NewsDataStore {
     }
     
     func loadFreshNews() {
-        <#code#>
+        print("testFreshNews")
     }
     
     func loadMoreNews() {
-        <#code#>
+        print("testMoreNews")
     }
     
     
