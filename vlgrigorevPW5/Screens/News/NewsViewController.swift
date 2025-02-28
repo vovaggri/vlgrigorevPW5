@@ -10,12 +10,26 @@ import UIKit
 final class NewsViewController: UIViewController {
     
     private let tableView: UITableView = UITableView(frame: .zero)
-
+    private var interactor: (NewsInteractor & NewsDataStore)?
+    
+    init(interactor: (NewsInteractor & NewsDataStore)? = nil) {
+        self.interactor = interactor
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = .white
         // Do any additional setup after loading the view.
+        configureTable()
+    }
+
+    private func configureTable() {
         view.addSubview(tableView)
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         tableView.pinTop(to: view.safeAreaLayoutGuide.topAnchor)
@@ -25,8 +39,6 @@ final class NewsViewController: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
     }
-
-
 }
 
 extension NewsViewController: UITableViewDataSource, UITableViewDelegate {
