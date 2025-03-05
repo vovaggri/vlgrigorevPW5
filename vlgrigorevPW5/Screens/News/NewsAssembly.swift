@@ -14,6 +14,7 @@ final class NewsAssembly {
         let articleWorker = ArticleWorker()
         let interactor = NewsInteractor(presenter: presenter, articleWorker: articleWorker)
         let newsVC = NewsViewController(interactor: interactor)
+        presenter.newsVC = newsVC
         
         return newsVC
     }

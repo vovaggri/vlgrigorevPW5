@@ -19,17 +19,19 @@ final class ArticleWorker: ArticleWorkerProtocol {
         guard let url = getURL(4, 1) else { return }
         URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
             if let error = error {
-                completion(.failure(error))
                 print(error)
+                completion(.failure(error))
                 return
             }
+            
             if
-                let self,
+                let self = self,
                 let data = data,
-                var newsPage = try? decoder.decode(Models.NewsPage.self, from: data)
+                var newsPage = try? self.decoder.decode(Models.NewsPage.self, from: data)
             {
                 newsPage.passTheRequestId()
                 self.newsPage = newsPage
+                completion(.success(newsPage))
             }
         }.resume()
     }

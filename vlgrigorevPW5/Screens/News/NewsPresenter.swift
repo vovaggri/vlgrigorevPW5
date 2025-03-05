@@ -6,14 +6,16 @@
 //
 
 protocol NewsPresenterProtocol {
-    func presentNews()
+    func presentNews(articles: [Models.ArticleModel])
 }
 
 final class NewsPresenter: NewsPresenterProtocol {
     weak var newsVC: NewsViewController?
     
-    func presentNews() {
-        print("testPresentNews")
+    func presentNews(articles: [Models.ArticleModel]) {
+        print("PresentNews works")
+        let viewModel = Models.NewsViewModel(articles: articles)
+        newsVC?.displayView(viewModel: viewModel)
     }
     
     
