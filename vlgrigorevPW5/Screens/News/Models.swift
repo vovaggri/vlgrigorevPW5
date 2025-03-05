@@ -34,4 +34,8 @@ enum Models {
             }
         }
     }
+    
+    struct NewsViewModel {
+        let articles: [Models.ArticleModel]
+    }
 }

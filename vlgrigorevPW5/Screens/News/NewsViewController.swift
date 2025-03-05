@@ -11,8 +11,9 @@ final class NewsViewController: UIViewController {
     
     private let tableView: UITableView = UITableView(frame: .zero)
     private var interactor: (NewsInteractor & NewsDataStore)?
+    private var articles: [Models.ArticleModel] = []
     
-    init(interactor: (NewsInteractor & NewsDataStore)? = nil) {
+    init(interactor: (NewsInteractor & NewsDataStore)?) {
         self.interactor = interactor
         super.init(nibName: nil, bundle: nil)
     }
@@ -27,11 +28,20 @@ final class NewsViewController: UIViewController {
         view.backgroundColor = .white
         // Do any additional setup after loading the view.
         configureTable()
+        
+        interactor?.loadFreshNews()
+    }
+    
+    func displayView(viewModel: Models.NewsViewModel) {
+        DispatchQueue.main.async { [weak self] in
+            self?.articles = viewModel.articles
+            self?.tableView.reloadData()
+        }
     }
 
     private func configureTable() {
         view.addSubview(tableView)
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: ArticleCell.Constants.identifier)
         tableView.pinTop(to: view.safeAreaLayoutGuide.topAnchor)
         tableView.pinBottom(to: view.safeAreaLayoutGuide.bottomAnchor)
         tableView.pinLeft(to: view.safeAreaLayoutGuide.leadingAnchor)
@@ -47,13 +57,21 @@ extension NewsViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return articles.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.textLabel?.text = "Cell number \(indexPath.row)"
-        cell.selectionStyle = .none
+//        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+//        cell.textLabel?.text = "Cell number \(indexPath.row)"
+//        cell.selectionStyle = .none
+//        return cell
+        
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: ArticleCell.Constants.identifier, for: indexPath) as? ArticleCell else {
+            return UITableViewCell()
+        }
+        
+        let article = articles[indexPath.row]
+        cell.configure(with: article)
         return cell
     }
 }
