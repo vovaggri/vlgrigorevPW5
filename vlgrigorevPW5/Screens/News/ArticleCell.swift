@@ -34,7 +34,6 @@ final class ArticleCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupViews()
         setupConstraints()
-        setupConstraints()
     }
     
     required init?(coder: NSCoder) {
@@ -43,6 +42,7 @@ final class ArticleCell: UITableViewCell {
     
     func configure(with article: Models.ArticleModel) {
         titleLabel.text = article.title
+        announceLabel.text = article.announce
         
         if let imageUrl = article.img?.url {
             loadImage(from: imageUrl)
@@ -53,19 +53,29 @@ final class ArticleCell: UITableViewCell {
     
     private func setupViews() {
         contentView.addSubview(articleImageView)
-//        contentView.addSubview(announceLabel)
+        contentView.addSubview(announceLabel)
         contentView.addSubview(titleLabel)
     }
     
     private func setupConstraints() {
+        // Image
         articleImageView.pinTop(to: contentView.topAnchor)
-        articleImageView.pinBottom(to: contentView.bottomAnchor)
         articleImageView.pinLeft(to: contentView.leadingAnchor)
         articleImageView.pinRight(to: contentView.trailingAnchor)
         
+        articleImageView.setHeight(200)
+        
+        // Title
+        titleLabel.pinTop(to: articleImageView.bottomAnchor, 8)
         titleLabel.pinLeft(to: contentView.leadingAnchor, 16)
         titleLabel.pinRight(to: contentView.trailingAnchor, 16)
-        titleLabel.pinBottom(to: contentView.bottomAnchor, 16)
+        
+        // Announce
+        announceLabel.pinTop(to: titleLabel.bottomAnchor, 4)
+        announceLabel.pinLeft(to: contentView.leadingAnchor, 16)
+        announceLabel.pinRight(to: contentView.trailingAnchor, 16)
+        
+        announceLabel.pinBottom(to: contentView.bottomAnchor, 8)
     }
     
     private func loadImage(from url: URL) {
@@ -75,6 +85,6 @@ final class ArticleCell: UITableViewCell {
             DispatchQueue.main.async {
                 self.articleImageView.image = UIImage(data: data)
             }
-        }
+        }.resume()
     }
 }

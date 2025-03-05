@@ -28,6 +28,8 @@ final class NewsViewController: UIViewController {
         view.backgroundColor = .white
         // Do any additional setup after loading the view.
         configureTable()
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 200
         
         interactor?.loadFreshNews()
     }
@@ -41,7 +43,7 @@ final class NewsViewController: UIViewController {
 
     private func configureTable() {
         view.addSubview(tableView)
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: ArticleCell.Constants.identifier)
+        tableView.register(ArticleCell.self, forCellReuseIdentifier: ArticleCell.Constants.identifier)
         tableView.pinTop(to: view.safeAreaLayoutGuide.topAnchor)
         tableView.pinBottom(to: view.safeAreaLayoutGuide.bottomAnchor)
         tableView.pinLeft(to: view.safeAreaLayoutGuide.leadingAnchor)
