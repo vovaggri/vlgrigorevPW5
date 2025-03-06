@@ -41,6 +41,16 @@ final class NewsInteractor: NewsBuisnessLogic, NewsDataStore {
     
     func loadMoreNews() {
         print("testMoreNews")
+        articleWorker?.fetchNews(completion: { [weak self] result in
+            switch result {
+            case .success(let newsPage):
+                guard let self = self else { return }
+                self.articles += newsPage.news ?? []
+                self.presenter?.presentNews(articles: self.articles)
+            case .failure(let error):
+                print("Error \(error)")
+            }
+        })
     }
     
     func routToWeb(_ urlModel: Models.RoutToWeb) {

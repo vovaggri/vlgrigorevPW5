@@ -6,6 +6,10 @@ import UIKit
 import WebKit
 
 final class WebViewController: UIViewController {
+    enum Constants {
+        static let returnButtonName: String = "chevron.left"
+    }
+    
     private var interactor: WebBuisnessLogic?
     private var url: URL?
     private var webView: WKWebView = WKWebView()
@@ -24,8 +28,17 @@ final class WebViewController: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = .white
+        
+        let returnButton = UIBarButtonItem(image: UIImage(systemName: Constants.returnButtonName), style: .plain, target: self, action: #selector(returnButtonPressed))
+        navigationItem.leftBarButtonItem = returnButton
+        
         configureWebView()
-        webView.load(URLRequest(url: url!))
+        
+        guard let url = url else {
+            print("Invalid URL!")
+            return
+        }
+        webView.load(URLRequest(url: url))
     }
     
     private func configureWebView() {
@@ -33,5 +46,9 @@ final class WebViewController: UIViewController {
         webView.pinHorizontal(to: view)
         webView.pinTop(to: view.safeAreaLayoutGuide.topAnchor)
         webView.pinBottom(to: view.safeAreaLayoutGuide.bottomAnchor)
+    }
+    
+    @objc private func returnButtonPressed() {
+        interactor?.returnButtonLogic()
     }
 }

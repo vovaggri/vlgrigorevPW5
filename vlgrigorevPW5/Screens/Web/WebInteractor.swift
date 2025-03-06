@@ -3,7 +3,7 @@
 //  vlgrigorevPW5
 
 protocol WebBuisnessLogic {
-    
+    func returnButtonLogic()
 }
 
 final class WebInteractor: WebBuisnessLogic {
@@ -11,5 +11,9 @@ final class WebInteractor: WebBuisnessLogic {
     
     init(presenter: WebPresenterProtocol?) {
         self.presenter = presenter
+    }
+    
+    func returnButtonLogic() {
+        presenter?.routBackNews()
     }
 }
