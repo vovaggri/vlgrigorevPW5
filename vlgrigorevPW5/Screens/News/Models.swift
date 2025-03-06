@@ -38,4 +38,8 @@ enum Models {
     struct NewsViewModel {
         let articles: [Models.ArticleModel]
     }
+    
+    struct RoutToWeb {
+        let articleURL: URL?
+    }
 }

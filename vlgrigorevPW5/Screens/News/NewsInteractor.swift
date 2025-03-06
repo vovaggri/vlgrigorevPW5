@@ -8,6 +8,7 @@
 protocol NewsBuisnessLogic {
     func loadFreshNews()
     func loadMoreNews()
+    func routToWeb(_ urlModel: Models.RoutToWeb)
 }
 
 protocol NewsDataStore {
@@ -15,8 +16,8 @@ protocol NewsDataStore {
 }
 
 final class NewsInteractor: NewsBuisnessLogic, NewsDataStore {
-    var presenter: NewsPresenterProtocol?
     var articles: [Models.ArticleModel] = []
+    private var presenter: NewsPresenterProtocol?
     private let articleWorker: ArticleWorkerProtocol?
     
     init(presenter: NewsPresenterProtocol?, articleWorker: ArticleWorkerProtocol?) {
@@ -42,5 +43,7 @@ final class NewsInteractor: NewsBuisnessLogic, NewsDataStore {
         print("testMoreNews")
     }
     
-    
+    func routToWeb(_ urlModel: Models.RoutToWeb) {
+        presenter?.routToWeb(urlModel)
+    }
 }

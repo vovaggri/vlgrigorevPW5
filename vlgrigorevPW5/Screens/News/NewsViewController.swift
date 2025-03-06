@@ -56,6 +56,8 @@ final class NewsViewController: UIViewController {
 extension NewsViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print(indexPath.row)
+        let articleUrl = interactor?.articles[indexPath.row].articleUrl
+        interactor?.routToWeb(Models.RoutToWeb(articleURL: articleUrl))
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
