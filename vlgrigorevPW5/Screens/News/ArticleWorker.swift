@@ -17,7 +17,7 @@ final class ArticleWorker: ArticleWorkerProtocol {
     
     func fetchNews(completion: @escaping (Result<Models.NewsPage, Error>) -> Void) {
         guard let url = getURL(4, 1) else { return }
-        URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
+        URLSession.shared.dataTask(with: url) { [weak decoder] data, response, error in
             if let error = error {
                 print(error)
                 completion(.failure(error))
@@ -25,9 +25,8 @@ final class ArticleWorker: ArticleWorkerProtocol {
             }
             
             if
-                let self = self,
                 let data = data,
-                var newsPage = try? self.decoder.decode(Models.NewsPage.self, from: data)
+                var newsPage = try? decoder?.decode(Models.NewsPage.self, from: data)
             {
                 newsPage.passTheRequestId()
                 self.newsPage = newsPage

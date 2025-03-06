@@ -5,8 +5,11 @@
 //  Created by Vladimir Grigoryev on 26.02.2025.
 //
 
+import UIKit
+
 protocol NewsPresenterProtocol {
     func presentNews(articles: [Models.ArticleModel])
+    func routToWeb(_ urlModel: Models.RoutToWeb)
 }
 
 final class NewsPresenter: NewsPresenterProtocol {
@@ -18,5 +21,7 @@ final class NewsPresenter: NewsPresenterProtocol {
         newsVC?.displayView(viewModel: viewModel)
     }
     
-    
+    func routToWeb(_ urlModel: Models.RoutToWeb) {
+        newsVC?.navigationController?.pushViewController(WebAssembly.assembly(with: urlModel.articleURL), animated: true)
+    }
 }
