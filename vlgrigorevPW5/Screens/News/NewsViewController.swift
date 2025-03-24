@@ -8,6 +8,10 @@
 import UIKit
 
 final class NewsViewController: UIViewController {
+    enum Constants {
+        static let rowHeight: CGFloat = 200
+        static let shareTitleText: String = "Share"
+    }
     
     private let tableView: UITableView = UITableView(frame: .zero)
     private var interactor: (NewsInteractor & NewsDataStore)?
@@ -29,7 +33,7 @@ final class NewsViewController: UIViewController {
         // Do any additional setup after loading the view.
         configureTable()
         tableView.rowHeight = UITableView.automaticDimension
-        tableView.estimatedRowHeight = 200
+        tableView.estimatedRowHeight = Constants.rowHeight
         
         interactor?.loadFreshNews()
     }
@@ -77,6 +81,16 @@ extension NewsViewController: UITableViewDataSource, UITableViewDelegate {
         let article = articles[indexPath.row]
         cell.configure(with: article)
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let share = UIContextualAction(style: .normal, title: Constants.shareTitleText) { (action, view, completionHandler) in
+            self.interactor?.prepareNewsShare(self.interactor?.articles[indexPath.row].newsId)
+            completionHandler(true)
+        }
+        
+        let swipe = UISwipeActionsConfiguration(actions: [share])
+        return swipe
     }
 }
 
