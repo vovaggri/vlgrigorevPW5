@@ -5,7 +5,7 @@
 //  Created by Vladimir Grigoryev on 28.02.2025.
 //
 
-import Foundation
+import UIKit
 
 enum Models {
     struct ArticleModel: Decodable {
@@ -41,5 +41,10 @@ enum Models {
     
     struct RoutToWeb {
         let articleURL: URL?
+    }
+    
+    struct ShareNews {
+        let id: Int?
+        let shareVC: UIActivityViewController
     }
 }

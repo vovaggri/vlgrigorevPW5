@@ -8,6 +8,7 @@ import WebKit
 final class WebViewController: UIViewController {
     enum Constants {
         static let returnButtonName: String = "chevron.left"
+        static let invalidUrl: String = "Invalid URL!"
     }
     
     private var interactor: WebBuisnessLogic?
@@ -35,7 +36,7 @@ final class WebViewController: UIViewController {
         configureWebView()
         
         guard let url = url else {
-            print("Invalid URL!")
+            print(Constants.invalidUrl)
             return
         }
         webView.load(URLRequest(url: url))
