@@ -3,6 +3,7 @@ import UIKit
 final class ArticleCell: UITableViewCell {
     enum Constants {
         static let identifier = "cell"
+        static let shimmerFrame: CGRect = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 200)
     }
     
     private let articleImageView: UIImageView = {
@@ -30,6 +31,8 @@ final class ArticleCell: UITableViewCell {
         return label
     }()
     
+    private let shimmer: ShimmerView = ShimmerView(frame: Constants.shimmerFrame)
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupViews()
@@ -52,9 +55,12 @@ final class ArticleCell: UITableViewCell {
     }
     
     private func setupViews() {
+        contentView.clipsToBounds = false
         contentView.addSubview(articleImageView)
         contentView.addSubview(announceLabel)
         contentView.addSubview(titleLabel)
+        contentView.addSubview(shimmer)
+        configureShimmer()
     }
     
     private func setupConstraints() {
@@ -83,8 +89,14 @@ final class ArticleCell: UITableViewCell {
             guard let self = self, let data = data, error == nil else { return }
             
             DispatchQueue.main.async {
+                self.shimmer.isHidden = true
                 self.articleImageView.image = UIImage(data: data)
             }
         }.resume()
+    }
+    
+    private func configureShimmer() {
+        shimmer.translatesAutoresizingMaskIntoConstraints = false
+        shimmer.startAnimating()
     }
 }
