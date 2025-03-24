@@ -14,6 +14,7 @@ final class NewsViewController: UIViewController {
     }
     
     private let tableView: UITableView = UITableView(frame: .zero)
+    private let refreshControl = UIRefreshControl()
     private var interactor: (NewsInteractor & NewsDataStore)?
     private var articles: [Models.ArticleModel] = []
     
@@ -35,13 +36,22 @@ final class NewsViewController: UIViewController {
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = Constants.rowHeight
         
+        configureRefreshControl()
+        
         interactor?.loadFreshNews()
     }
     
     func displayView(viewModel: Models.NewsViewModel) {
         DispatchQueue.main.async { [weak self] in
+//            self?.articles = viewModel.articles
+//            self?.tableView.reloadData()
+            
             self?.articles = viewModel.articles
             self?.tableView.reloadData()
+            
+            if viewModel.shouldEndRefreshing {
+                self?.refreshControl.endRefreshing()
+            }
         }
     }
 
@@ -54,6 +64,15 @@ final class NewsViewController: UIViewController {
         tableView.pinRight(to: view.safeAreaLayoutGuide.trailingAnchor)
         tableView.dataSource = self
         tableView.delegate = self
+    }
+    
+    private func configureRefreshControl() {
+        tableView.refreshControl = refreshControl
+        refreshControl.addTarget(self, action: #selector(refreshNews), for: .valueChanged)
+    }
+    
+    @objc private func refreshNews() {
+        interactor?.loadFreshNews()
     }
 }
 

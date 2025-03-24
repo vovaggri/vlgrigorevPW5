@@ -37,6 +37,7 @@ enum Models {
     
     struct NewsViewModel {
         let articles: [Models.ArticleModel]
+        let shouldEndRefreshing: Bool
     }
     
     struct RoutToWeb {

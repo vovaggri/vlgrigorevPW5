@@ -8,7 +8,7 @@
 import UIKit
 
 protocol NewsPresenterProtocol {
-    func presentNews(articles: [Models.ArticleModel])
+    func presentNews(articles: [Models.ArticleModel], shouldEndRefreshing: Bool)
     func routToWeb(_ urlModel: Models.RoutToWeb)
     func showShare(_ shareVC: UIActivityViewController)
 }
@@ -16,8 +16,8 @@ protocol NewsPresenterProtocol {
 final class NewsPresenter: NewsPresenterProtocol {
     weak var newsVC: NewsViewController?
     
-    func presentNews(articles: [Models.ArticleModel]) {
-        let viewModel = Models.NewsViewModel(articles: articles)
+    func presentNews(articles: [Models.ArticleModel], shouldEndRefreshing: Bool) {
+        let viewModel = Models.NewsViewModel(articles: articles, shouldEndRefreshing: shouldEndRefreshing)
         newsVC?.displayView(viewModel: viewModel)
     }
     

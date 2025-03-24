@@ -33,12 +33,13 @@ final class NewsInteractor: NewsBuisnessLogic, NewsDataStore {
     }
     
     func loadFreshNews() {
+        print("Interactor works")
         articleWorker?.fetchNews(completion: { [weak self] result in
             switch result {
             case .success(let newsPage):
                 guard let self = self else { return }
                 self.articles = newsPage.news ?? []
-                self.presenter?.presentNews(articles: self.articles)
+                self.presenter?.presentNews(articles: self.articles, shouldEndRefreshing: true)
             case .failure(let error):
                 print("Error \(error)")
             }
@@ -51,7 +52,7 @@ final class NewsInteractor: NewsBuisnessLogic, NewsDataStore {
             case .success(let newsPage):
                 guard let self = self else { return }
                 self.articles += newsPage.news ?? []
-                self.presenter?.presentNews(articles: self.articles)
+                self.presenter?.presentNews(articles: self.articles, shouldEndRefreshing: true)
             case .failure(let error):
                 print("Error \(error)")
             }
